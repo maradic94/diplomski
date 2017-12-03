@@ -1,0 +1,213 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <body>
+        <ui:composition template="../resources/templates/admin_main_template.xhtml">
+
+
+            <ui:define name="windowTitle">
+                #{msgs.showClassRooms}
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form id="formEdit">
+                    <b:row>
+                        <b:column offset="4" span="6">
+                            <h1 style="padding-bottom: 50px">
+                                #{msgs.AllClassRooms}
+
+                            </h1>
+                        </b:column>
+                    </b:row>
+
+                    <b:container id="all_classrooms_editing">
+
+                        <b:row>
+                            <b:column rendered="#{classRoomController.alertType != 0}" style="padding-bottom: 20px">
+                                <b:alert closable="true" rendered="#{classRoomController.alertType == 1}"
+                                         severity="success" style="white-space: pre-wrap;">#{classRoomController.messageContent}</b:alert>
+
+                                <b:alert closable="true" rendered="#{classRoomController.alertType == 3}"
+                                         severity="warning"  style="white-space: pre-wrap;">#{classRoomController.messageContent}</b:alert>
+
+                            </b:column>
+                        </b:row>
+
+                        <b:row>
+                            <ui:repeat  value="#{classRoomController.allClassRooms}" var="clsRoom" >
+
+                                <p:dialog header="#{clsRoom.classRoomName}" widgetVar="dlgEdit#{clsRoom.classRoomID}" hideEffect="fade" showEffect="fade" modal="true" height="500" width="600">
+                                    <b:row>
+                                        <b:column medium-screen="10" >
+                                            <b:inputText value="#{clsRoom.classRoomName}" label="#{msgs.name}" 
+                                                         required="true" renderLabel="true"  placeholder="#{msgs.name}"/>
+                                        </b:column>
+
+                                    </b:row>
+
+                                    <b:row>
+                                        <b:column medium-screen="10" >
+                                            <b:inputText value="#{clsRoom.capacity}" label="#{msgs.capacity}" 
+                                                         required="true" renderLabel="true"  placeholder="#{msgs.capacity}"/>
+                                        </b:column>
+
+                                    </b:row>
+
+                                    <b:row>
+                                        <b:column medium-screen="10" >
+                                            <b:inputText  value="#{clsRoom.computerNum}" 
+                                                          required="true" renderLabel="true"  label="#{msgs.numComputers}" placeholder="#{msgs.numComputers}"/>
+                                        </b:column>
+
+                                    </b:row>
+
+                                    <b:row>
+                                        <b:column medium-screen="12" >
+                                            <b:selectBooleanCheckbox value="#{clsRoom.hasMainComputer}" 
+                                                                     caption="#{msgs.hasMain}"  />                                                
+                                        </b:column>
+                                    </b:row>
+
+                                    <b:row>
+                                        <b:column medium-screen="10" >
+                                            <b:selectBooleanCheckbox value="#{clsRoom.hasWhiteboard}" caption="#{msgs.hasWhiteBoard}"/>                                                   
+                                        </b:column>
+                                    </b:row>
+
+                                    <br/>
+                                    <b:row>
+                                        <b:column medium-screen="10" >
+                                            <label>#{msgs.location}</label>
+                                            <b:selectOneMenu value="#{clsRoom.location}" >
+                                                <f:selectItems var="item" value="#{classRoomController.allLocations}" 
+                                                               itemLabel="#{item.locationName}" itemValue="#{item}"/>
+                                            </b:selectOneMenu>
+                                        </b:column>
+                                    </b:row>
+                                    <f:facet name="footer">
+                                        <h:commandButton value="#{msgs.save}" 
+                                                         action="#{classRoomController.saveEditedClassRoom(clsRoom)}"
+                                                         class="btn btn-primary" style="width: 60%; margin-right: 10%"/>
+                                        <b:button value="#{msgs.close}" onclick="PF('dlgEdit#{clsRoom.classRoomID}').hide();" 
+                                                  class="btn btn-default" style="width: 30%;"/>
+                                    </f:facet>
+
+                                </p:dialog>
+
+                                <p:dialog header="#{msgs.sureToDelete} #{clsRoom.classRoomName} ?" widgetVar="dlgDelete#{clsRoom.classRoomID}"
+                                          modal="true" hideEffect="fade" showEffect="bounce" height="50" width="600">
+
+                                    <f:facet name="footer">
+                                        <h:commandButton value="#{msgs.ok}" action="#{classRoomController.deleteClassRoom(clsRoom)}" class="btn btn-primary" style="width: 60%; margin-right: 10%"/>
+                                        <b:button value="#{msgs.close}" onclick="PF('dlgDelete#{clsRoom.classRoomID}').hide();" class="btn btn-default" style="width: 30%;" />
+                                    </f:facet>
+                                </p:dialog>
+
+                                <p:dialog header="#{clsRoom.classRoomName}" widgetVar="dlgShow#{clsRoom.classRoomID}"
+                                          modal="true" hideEffect="fade" showEffect="fade" height="200" width="600">
+                                    <b:row>
+                                        <b:column medium-screen="6">
+                                            <p class="text-info">#{msgs.name}</p> 
+                                        </b:column>
+                                        <b:column medium-screen="6">
+                                            #{clsRoom.classRoomName}
+                                        </b:column>
+                                    </b:row>
+
+                                    <b:row>
+                                        <b:column medium-screen="6">
+                                            <p class="text-info">#{msgs.capacity}</p> 
+                                        </b:column>
+                                        <b:column medium-screen="6">
+                                            #{clsRoom.capacity}
+                                        </b:column>
+                                    </b:row>
+
+                                    <b:row>
+                                        <b:column medium-screen="6">
+                                            <p class="text-info">#{msgs.numComputers}</p> 
+                                        </b:column>
+                                        <b:column medium-screen="6">
+                                            #{clsRoom.computerNum}
+                                        </b:column>
+                                    </b:row>
+
+
+                                    <b:row>
+                                        <b:column medium-screen="6">
+                                            <p class="text-info">#{msgs.locationName}</p> 
+                                        </b:column>
+                                        <b:column medium-screen="3">
+                                            #{clsRoom.location.locationName}
+                                        </b:column>
+                                    </b:row>
+
+                                    <b:row>
+                                        <b:column medium-screen="6">
+                                            <p class="text-info">#{msgs.hasMain}</p> 
+                                        </b:column>
+                                        <b:column medium-screen="6"  rendered="#{clsRoom.hasMainComputer}">
+                                            <b:iconAwesome name="check-circle"/>
+                                        </b:column>   
+                                        <b:column medium-screen="6"  rendered="#{!clsRoom.hasMainComputer}">
+                                            <b:iconAwesome name="times-circle"/>
+                                        </b:column> 
+
+                                    </b:row>
+
+                                    <b:row>
+                                        <b:column medium-screen="6">
+                                            <p class="text-info">#{msgs.hasWhiteBoard}</p> 
+                                        </b:column>
+
+                                        <b:column medium-screen="6"  rendered="#{clsRoom.hasWhiteboard}">
+                                            <b:iconAwesome name="check-circle"/>
+                                        </b:column>   
+                                        <b:column medium-screen="6"  rendered="#{!clsRoom.hasWhiteboard}">
+                                            <b:iconAwesome name="times-circle"/>
+                                        </b:column> 
+
+
+                                    </b:row>
+
+
+                                    <f:facet name="footer">                                
+                                        <b:button value="#{msgs.ok}" onclick="PF('dlgShow#{clsRoom.classRoomID}').hide();" 
+                                                  class="btn btn-primary" style="width: 100%;" />
+                                    </f:facet>
+
+
+                                </p:dialog>
+
+
+                                <b:column col-xs="6" col-md="3">
+                                    <b:thumbnail>
+                                        <a value="" onclick="PF('dlgShow#{clsRoom.classRoomID}').show();" style="cursor:pointer">#{clsRoom.classRoomName}</a>
+                                        <hr/>
+                                        <b:button style="margin-left: 10%;" look="primary" icon="pencil" value=""
+                                                  onclick="PF('dlgEdit#{clsRoom.classRoomID}').show();"/>
+
+                                        <b:button style="margin-left: 50%;" look="default" icon="trash" value=""
+                                                  onclick="PF('dlgDelete#{clsRoom.classRoomID}').show();"/>
+                                    </b:thumbnail>
+                                </b:column>
+                            </ui:repeat>
+                        </b:row>
+                    </b:container>
+
+
+                </h:form>
+
+            </ui:define>
+
+
+
+        </ui:composition>
+    </body>
+</html>

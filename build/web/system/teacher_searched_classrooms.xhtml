@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <body>
+        <ui:composition template="../resources/templates/teacher_main_template.xhtml">
+
+
+            <ui:define name="windowTitle">
+                #{msgs.reserveClassroom}
+            </ui:define>
+
+
+            <ui:define name="content">
+                <b:row>
+                    <b:column offset="4" span="6">
+                        <h1 style="padding-bottom: 50px">
+                            #{msgs.reserveClassroom} 
+                        </h1>
+                    </b:column>
+
+                    <b:column span="2">
+                        <h:form>
+                            <b:commandButton style="margin-top: 20px; width: 100%;" look="info" value="#{msgs.back}" iconAwesome="undo" 
+                                             onclick="ajax:teacherSearchClassroomController.backToSearch()" />
+                        </h:form>
+                    </b:column>
+                </b:row>
+
+                <b:row>
+                    <h:form id = "searched_classrooms">
+                        <b:column medium-screen="7" offset="2" style="margin-bottom: 20px;" rendered="#{teacherSearchClassroomController.searchedClassRooms.size() > 0 
+                                                                                                or teacherSearchClassroomController.combinations.size() > 0}">
+
+                            <b:column style="padding-bottom: 20px">
+                                <b:alert closable="true" rendered="#{teacherSearchClassroomController.messageType == 1}"
+                                         severity="success">
+                                    #{teacherSearchClassroomController.messageReservContent}
+                                </b:alert>
+
+                                <b:alert closable="true" rendered="#{teacherSearchClassroomController.messageType == 3}"
+                                         severity="warning">
+                                    #{teacherSearchClassroomController.messageReservContent}
+                                </b:alert>
+                            </b:column>
+
+
+                            <b:column>
+                                <label>
+                                    #{msgs.description}
+                                </label>
+                                <b:inputText id="title" value="#{teacherSearchClassroomController.newReservation.description}"
+                                             placeholder="#{msgs.description}"/>
+
+                            </b:column>     
+
+                            <b:column>
+                                <label>
+                                    #{msgs.selectPurpose}
+                                </label>
+                                <b:selectOneMenu value="#{teacherSearchClassroomController.purpose}" id="purpose">
+                                    <f:selectItem itemLabel="#{msgs.lectures}" itemValue="1"/>
+                                    <f:selectItem itemLabel="#{msgs.exercises}" itemValue="2"/>
+                                    <f:selectItem itemLabel="#{msgs.lab_exercises}" itemValue="3"/>                                        
+                                    <f:selectItem itemLabel="#{msgs.consultation}" itemValue="4"/>
+                                    <f:selectItem itemLabel="#{msgs.test}" itemValue="5"/>
+                                    <f:selectItem itemLabel="#{msgs.exam}" itemValue="6"/>
+                                    <f:selectItem itemLabel="#{msgs.homework}" itemValue="7"/>
+                                    <f:selectItem itemLabel="#{msgs.project}" itemValue="8"/>
+                                    <f:selectItem itemLabel="#{msgs.specialLectures}" itemValue="9"/>
+                                    <f:selectItem itemLabel="#{msgs.graduateWork}" itemValue="10"/>
+                                    <f:selectItem itemLabel="#{msgs.masterWork}" itemValue="11"/>
+                                    <f:selectItem itemLabel="#{msgs.doctoralWork}" itemValue="12"/>
+                                    <f:selectItem itemLabel="#{msgs.other}" itemValue="13"/>
+                                </b:selectOneMenu>
+
+                            </b:column>                                            
+
+
+
+                            <b:column style="margin-bottom: 40px;">
+                                <label>
+                                    #{msgs.selectCourse}
+                                </label>
+
+                                <b:selectOneMenu value="#{teacherSearchClassroomController.newReservation.course}">
+                                    <f:selectItems var="item" value="#{teacherSearchClassroomController.getTeachersCourses()}" 
+                                                   itemLabel="#{item.courseName}" itemValue="#{item}"/>
+                                </b:selectOneMenu>
+                            </b:column>
+
+                            <b:column medium-screen="12">
+                                <b:dataTable value="#{teacherSearchClassroomController.searchedClassRooms}" var="clsRoom" styleClass="table table-striped table-bordered"
+                                             style="width:100%;" rendered="#{teacherSearchClassroomController.searchedClassRooms.size()>0}">
+
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.classroom}" />
+                                        </f:facet>
+                                        <h:outputText value="#{clsRoom.classRoomName}" />
+                                    </h:column>
+
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText style="margin-left: 40%;" value="#{msgs.reservation}" />
+                                        </f:facet>
+                                        <b:commandButton style="margin-left: 40%;" look="success" icon="edit" value=""  
+                                                         ajax="true"
+                                                         onclick="ajax:teacherSearchClassroomController.reserveClassRoom(clsRoom)"
+                                                         update="searched_classrooms"/>
+                                    </h:column>
+
+
+                                </b:dataTable>
+                            </b:column>
+
+
+                            <b:column medium-screen="12">
+                                <b:dataTable value="#{teacherSearchClassroomController.combinations}" var="comb" styleClass="table table-striped table-bordered"
+                                             style="width:100%;" rendered="#{teacherSearchClassroomController.combinations.size() > 0}">
+
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.classrooms}" />
+                                        </f:facet>
+                                        <h:outputText value="#{comb.combinationDescription}" />
+                                    </h:column>
+                                    
+                                     <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.capacity}" />
+                                        </f:facet>
+                                        <h:outputText value="#{comb.sumCapacity}" />
+                                    </h:column>
+
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText style="margin-left: 40%;" value="#{msgs.reservation}" />
+                                        </f:facet>
+                                        <b:commandButton style="margin-left: 40%;" look="success" icon="edit" value=""  
+                                                         ajax="true"
+                                                         onclick="ajax:teacherSearchClassroomController.reserveCombination(comb)"
+                                                         update="searched_classrooms"/>
+                                    </h:column>
+
+
+                                </b:dataTable>
+                            </b:column>
+                        </b:column>
+
+
+
+                        <b:column span="11" offset="3" style="margin-bottom: 20px;" rendered="#{teacherSearchClassroomController.searchedClassRooms.size() == 0 
+                                                                                                and teacherSearchClassroomController.combinations.size() == 0}">
+                            <h3> #{msgs.noFree}</h3>
+                        </b:column>
+
+
+                        #{teacherSearchClassroomController.setMessageType(0)}
+                        #{teacherSearchClassroomController.setMessageReservContent("")}
+                    </h:form>
+
+                </b:row>
+            </ui:define>
+
+
+
+
+        </ui:composition>
+    </body>
+</html>

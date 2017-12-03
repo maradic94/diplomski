@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui">
+    <body>
+        <ui:composition>
+            <b:panel look="primary"  title="#{msgs.navigation}" collapsible="false">
+
+                <b:panel>
+                    <b:listLinks>
+                        <b:iconAwesome name="home"> &nbsp;#{msgs.profile}</b:iconAwesome>                   
+                        <b:navLink href="./admin_profile.xhtml" value="#{msgs.myProfile}" />
+                    </b:listLinks>
+                </b:panel>
+
+                <b:panel>
+                    <b:listLinks>
+                        <b:iconAwesome name="group"> &nbsp;#{msgs.users}</b:iconAwesome>                  
+                        <b:navLink href="./admin_approve_user_requests.xhtml" value="#{msgs.approveUserRequest}" />
+                        <b:navLink href="./admin_show_all_users.xhtml" value="#{msgs.showAllUsers}" />
+                    </b:listLinks>
+                </b:panel>
+
+                <b:panel>
+                    <b:listLinks>
+                        <b:iconAwesome name="calendar"> &nbsp;#{msgs.classrooms}</b:iconAwesome>
+                        <b:navLink href="./add_new_classroom.xhtml" value="#{msgs.addNewClassRoom}"></b:navLink>
+                        <b:navLink href="./show_all_classrooms.xhtml" value="#{msgs.showClassRooms}"></b:navLink>
+                        <b:navLink href="./admin_show_all_reservations.xhtml" value="#{msgs.showReservations}" />
+                    </b:listLinks>
+                </b:panel>
+            </b:panel>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,278 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <body>
+        <ui:composition template="../resources/templates/student_main_template.xhtml">
+
+
+            <ui:define name="windowTitle">
+                #{msgs.studentProfile}
+            </ui:define>
+
+            <ui:define name="content">
+
+                <b:row>
+                    <b:column offset="4" span="6">
+                        <h1 style="padding-bottom: 30px">
+                            #{sessionEntity.myUser.firstName} #{sessionEntity.myUser.surrName}
+                        </h1>
+                    </b:column>
+                </b:row>
+
+                <b:container fluid="true" id="studentDiv">
+                    <b:row rendered="#{studentController.messageType != 0}">
+                        <b:column  style="padding-bottom: 20px">
+                            <b:alert closable="true" rendered="#{studentController.messageType == 4}"
+                                     severity="info" style="white-space: pre-wrap;">#{studentController.messageContent}</b:alert>
+
+                            <b:alert closable="true" rendered="#{studentController.messageType == 2}"
+                                     severity="danger" style="white-space: pre-wrap;">#{msgs.msgBadRegister}</b:alert>
+                        </b:column>
+
+                    </b:row>
+
+                    <h:form>
+
+                        <b:tabView contentStyle="border-right: 1px solid #ddd;border-left: 1px solid #ddd;border-bottom: 1px solid #ddd;padding:10px">
+                            <b:tab id="firstTab" title="#{msgs.myProfileTitle}">
+
+                                <b:row id="my_profile">
+                                    <b:column span="12" style="width: 100%; ">
+
+                                        <b:row>
+                                            <b:column medium-screen="6">
+                                                <b:panel>
+                                                    <b:row>
+                                                        <b:column medium-screen="3" offset="3">
+                                                            <p class="text-info">#{msgs.username}</p> 
+                                                        </b:column>
+                                                        <b:column medium-screen="3">
+                                                            #{sessionEntity.myUser.userName}
+                                                        </b:column>
+                                                    </b:row>
+
+                                                    <b:row>
+                                                        <b:column medium-screen="3" offset="3">
+                                                            <p class="text-info">#{msgs.firstName}</p> 
+                                                        </b:column>
+                                                        <b:column medium-screen="3">
+                                                            #{sessionEntity.myUser.firstName}
+                                                        </b:column>
+                                                    </b:row>
+
+                                                    <b:row>
+                                                        <b:column medium-screen="3"  offset="3">
+                                                            <p class="text-info">#{msgs.surrname}</p> 
+                                                        </b:column>
+                                                        <b:column medium-screen="3">
+                                                            #{sessionEntity.myUser.surrName}
+                                                        </b:column>
+                                                    </b:row>
+
+                                                    <b:row>
+                                                        <b:column medium-screen="3"  offset="3">
+                                                            <p class="text-info">#{msgs.email}</p> 
+                                                        </b:column>
+                                                        <b:column medium-screen="3">
+                                                            #{sessionEntity.myUser.email}
+                                                        </b:column>
+                                                    </b:row>
+
+                                                    <b:row>
+                                                        <b:column medium-screen="3"  offset="3">
+                                                            <p class="text-info">#{msgs.city}</p> 
+                                                        </b:column>
+                                                        <b:column medium-screen="3">
+                                                            #{sessionEntity.myUser.city}
+                                                        </b:column>
+                                                    </b:row>
+
+                                                    <b:row>
+                                                        <b:column medium-screen="3" offset="3">
+                                                            <p class="text-info">#{msgs.telephone}</p> 
+                                                        </b:column>
+                                                        <b:column medium-screen="3">
+                                                            #{sessionEntity.myUser.telephone}
+                                                        </b:column>
+                                                    </b:row>
+
+                                                    <b:row>
+                                                        <b:column medium-screen="3" offset="3">
+                                                            <p class="text-info">#{msgs.gender}</p> 
+                                                        </b:column>
+                                                        <b:column medium-screen="3">
+                                                            <b:iconAwesome name="venus" rendered="#{!sessionEntity.myUser.isMale()}"/>
+                                                            <b:iconAwesome name="mars" rendered="#{sessionEntity.myUser.isMale()}"/>
+                                                        </b:column>
+                                                    </b:row>
+
+                                                    <b:row>
+                                                        <b:column medium-screen="3" offset="3">
+                                                            <p class="text-info">#{msgs.jmbg}</p> 
+                                                        </b:column>
+                                                        <b:column medium-screen="3">
+                                                            #{sessionEntity.myUser.JMBG}
+                                                        </b:column>
+                                                    </b:row>
+                                                </b:panel>
+                                            </b:column>
+                                            <b:column medium-screen="6">
+                                                <b:panel>
+                                                    <b:row>
+                                                        <b:column medium-screen="3" offset="3">
+                                                            <p class="text-info">#{msgs.userType}</p> 
+                                                        </b:column>
+                                                        <b:column medium-screen="3">
+                                                            #{sessionEntity.myUser.type}
+                                                        </b:column>
+                                                    </b:row>
+
+                                                    <!-- student -->
+                                                    <b:row>
+                                                        <b:column medium-screen="3" offset="3">
+                                                            <p class="text-info">#{msgs.year}</p> 
+                                                        </b:column>
+                                                        <b:column medium-screen="3">
+                                                            #{sessionEntity.myUser.year}
+                                                        </b:column>
+                                                    </b:row>
+
+                                                    <b:row>
+                                                        <b:column medium-screen="3" offset="3">
+                                                            <p class="text-info">#{msgs.moduleName}</p> 
+                                                        </b:column>
+                                                        <b:column medium-screen="3">
+                                                            #{sessionEntity.myUser.module.moduleName}
+                                                        </b:column>
+                                                    </b:row>
+
+                                                    <b:row>
+                                                        <b:column medium-screen="3" offset="3">
+                                                            <p class="text-info">#{msgs.userImage}</p> 
+                                                        </b:column>
+                                                        <b:column  medium-screen="3">
+                                                            <b:image value="./../images/#{sessionEntity.myUser.picture}" name="userImage" 
+                                                                     style="width: 150px; height: 100px; margin-bottom: 55px;" class="userImageClass"/>
+
+                                                        </b:column>
+                                                    </b:row>
+                                                </b:panel>
+                                            </b:column>
+
+                                        </b:row>
+                                    </b:column>
+                                </b:row>
+
+                            </b:tab>
+
+                            <b:tab title="#{msgs.changeYourData}">
+                                <h:form id="studentForm">
+                                    <b:row>
+                                        <b:column medium-screen="6">
+                                            <b:panel>
+                                                <h:form>
+                                                    <b:container fluid="true" id="change_pass_stud">
+
+                                                        <b:row>
+                                                            <b:column rendered="#{changePassController.alertType != 0}" style="padding-bottom: 20px">
+                                                                <b:alert closable="true" rendered="#{changePassController.alertType == 1}"
+                                                                         severity="success" style="white-space: pre-wrap;">#{msgs.msgSuccessfullyChanged}</b:alert>
+
+                                                                <b:alert closable="true" rendered="#{changePassController.alertType == 2}"
+                                                                         severity="danger" style="white-space: pre-wrap;">#{changePassController.messageContent}</b:alert>
+
+                                                                <b:alert closable="true" rendered="#{changePassController.alertType == 3}"
+                                                                         severity="warning" style="white-space: pre-wrap;">#{changePassController.messageContent}</b:alert>
+
+                                                            </b:column>
+                                                        </b:row>
+                                                        <b:row>
+                                                            <b:column>
+                                                                <b:inputSecret id="oldPass" value="#{changePassController.oldPass}" 
+                                                                               placeholder="#{msgs.oldPassword}" renderLabel="true" label="#{msgs.oldPassword}"/>
+                                                            </b:column>
+
+                                                        </b:row>
+
+                                                        <b:row>
+                                                            <b:column>
+                                                                <b:inputSecret id="newPass" value="#{changePassController.newPass}"  
+                                                                               placeholder="#{msgs.newPassword}" renderLabel="true" label="#{msgs.newPassword}"/>
+                                                            </b:column>
+
+                                                        </b:row>
+
+                                                        <b:row>
+                                                            <b:column>
+                                                                <b:inputSecret id="newPassConfirm" value="#{changePassController.newPassConfirm}"  
+                                                                               placeholder="#{msgs.newPasswordConfirm}" renderLabel="true" label="#{msgs.newPasswordConfirm}"/>
+                                                            </b:column>
+
+                                                        </b:row>
+                                                        <b:row>
+                                                            <b:column>
+                                                                <b:commandButton value="#{msgs.save}"  look="primary" 
+                                                                                 ajax="true" onclick="ajax:changePassController.saveNewPasswordNoUserName()"
+                                                                                 update="change_pass_stud"
+                                                                                 style="width:100%; margin-bottom: 35px;" />
+                                                            </b:column>
+
+                                                        </b:row>
+
+                                                    </b:container>
+                                                </h:form>
+                                            </b:panel>
+                                        </b:column>
+                                    </b:row>
+                                </h:form>
+                            </b:tab>
+
+
+                            <b:tab title="#{msgs.changeYourImage}">
+                                <b:row>
+                                    <b:column span="6">
+                                        <h4 style="padding-bottom: 30px">
+                                            <label>   #{msgs.uploadImage}</label>
+                                        </h4>
+                                    </b:column>
+                                </b:row>
+                                <b:row rendered="#{fileUploadController.alertType != 0}">
+                                            <b:column  style="padding-bottom: 20px">
+                           
+                                                 <b:alert closable="true" rendered="#{fileUploadController.alertType == 1}"
+                                                 severity="success" style="white-space: pre-wrap;">#{fileUploadController.messageContent}</b:alert>
+
+                                                 <b:alert closable="true" rendered="#{fileUploadController.alertType == 2}"
+                                                  severity="danger" style="white-space: pre-wrap;">#{fileUploadController.messageContent}</b:alert>
+                                            </b:column>
+
+                                </b:row>
+
+                                <h:form id="form" >
+                                    <b:container id="change_image_student">
+                                        
+                                        <p:fileUpload fileUploadListener="#{fileUploadController.upload}" 
+                                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" sizeLimit="1000000"/> 
+                                    </b:container>
+                                </h:form>
+
+
+                            </b:tab>
+
+                        </b:tabView>
+                    </h:form>
+
+                </b:container>
+
+            </ui:define>
+
+
+
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <body>
+        <ui:composition template="../resources/templates/student_main_template.xhtml">
+
+
+            <ui:define name="windowTitle">
+                #{msgs.studentHome}
+            </ui:define>
+
+            <ui:define name="content">
+
+                <b:row>
+                    <b:column offset="4" span="6">
+                        <h1 style="padding-bottom: 50px">
+                            #{msgs.daily}
+                        </h1>
+                    </b:column>
+                </b:row>
+
+
+
+                <h:form>
+                    <b:row id="daily_classroom">
+                        <b:column medium-screen="6" offset="2">
+                            <label>#{msgs.chooseClassroom}</label>
+                            <b:selectOneMenu value="#{dailyReservationController.classRoom}" required="true">
+                                <f:selectItems var="item" value="#{dailyReservationController.allClassRooms}" itemLabel="#{item.classRoomName}" itemValue="#{item}"/>
+                            </b:selectOneMenu>
+                        </b:column>
+                    </b:row>
+
+                    <b:row style="margin-bottom: 20px;">
+
+                        <b:column medium-screen="6" offset="2">  
+                            <label>#{msgs.chooseDate}</label><br/>
+                            <b:datepicker firstDay="1" value="#{dailyReservationController.selectedDate}" mode="icon-popup"  />
+                        </b:column>
+                    </b:row>
+
+                    <b:row>
+                        <b:column medium-screen="6" offset="2">                                   
+                            <b:commandButton  value="#{msgs.show}" ajax="true" update="daily_activity_content" 
+                                              onclick="ajax:dailyReservationController.showActivity();" look="primary" style="width: 100%;"  />
+                        </b:column>
+                    </b:row>                    
+                </h:form>
+
+                <b:container id ="daily_activity_content" fluid="true" style="margin-top: 80px">
+                    <b:row >
+                        <b:column  span="11" rendered="#{dailyReservationController.alertType != 0}" style="padding-bottom: 20px">
+                            <b:alert closable="true" rendered="#{dailyReservationController.alertType == 1}"
+                                     severity="success" style="white-space: pre-wrap;">#{dailyReservationController.messageContent}</b:alert>
+                            </b:column>
+                        </b:row>
+                    <b:row>
+                        <h:form>
+                            <b:column span="11">
+
+                                <b:dataTable value="#{dailyReservationController.dailyReservations}" var="reserv" 
+                                             styleClass="table"
+                                             rendered="#{dailyReservationController.dailyReservations.size()>0}"
+                                             style="width:100%">
+
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.courseName}" />
+                                        </f:facet>
+                                        <b> <h:outputText class="text text-success" 
+                                                          value="#{reserv.course.courseName}"
+                                                          rendered="#{reserv.course != null}"/></b>
+                                        <b:iconAwesome name="times" rendered="#{reserv.course == null}"/>
+                                    </h:column>
+
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.startDate}" />
+                                        </f:facet>
+                                        <h:outputText value="#{reserv.dateToShow}" />
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.time}" />
+                                        </f:facet>
+                                        <h:outputText value="#{reserv.timeToShow}" />
+                                    </h:column>
+
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.endDate}" />
+                                        </f:facet>
+                                        <h:outputText value="#{reserv.getDateEndToShow()}"/>
+                                    </h:column>
+
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.endTime}" />
+                                        </f:facet>
+                                        <h:outputText value="#{reserv.getTimeEndToShow()}"/>
+                                    </h:column>
+                                    
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.teacher}" />
+                                        </f:facet>
+                                        <h:outputText value="#{reserv.teacher.firstName} #{reserv.teacher.surrName}"/>
+                                    </h:column>
+
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.purpose}" />
+                                        </f:facet>
+                                        <h:outputText value="#{reserv.purpose}"/>
+                                    </h:column>
+                                    
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{msgs.description}" />
+                                        </f:facet>
+                                        <h:outputText value="#{reserv.description}"/>
+                                    </h:column>
+
+
+                                </b:dataTable>
+
+                                <b:column offset="2" span="11" rendered="#{dailyReservationController.dailyReservations.size()==0}">
+                                    <h3> ${msgs.noActivity} </h3>
+                                </b:column>
+
+
+                            </b:column>
+                        </h:form>
+                    </b:row>
+
+                </b:container>
+
+
+
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

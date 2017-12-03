@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <body>
+        <ui:composition template="../resources/templates/student_main_template.xhtml">
+
+
+            <ui:define name="windowTitle">
+                #{msgs.studentHome}
+            </ui:define>
+
+            <ui:define name="content">
+
+                <b:row>
+                    <b:column offset="4" span="6">
+                        <h1 style="padding-bottom: 50px">
+                            #{msgs.greeting} #{sessionEntity.myUser.firstName} #{sessionEntity.myUser.surrName}
+                        </h1>
+                    </b:column>
+                </b:row>
+
+                <b:row>
+                    <b:column offset="8" span="6">
+                        <b:image value="./../images/#{sessionEntity.myUser.picture}" name="userImage" 
+                                 style="width: 150px; height: 100px;" class="userImageClass"/>
+                    </b:column>
+                </b:row>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

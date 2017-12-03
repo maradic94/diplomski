@@ -1,0 +1,196 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <body>
+        <ui:composition template="../resources/templates/student_main_template.xhtml">
+
+
+            <ui:define name="windowTitle">
+                #{msgs.studentHome}
+            </ui:define>
+
+            <ui:define name="content">
+
+                <b:row>
+                    <b:column offset="4" span="6">
+                        <h1 style="padding-bottom: 50px">
+                            #{msgs.yourSchedule}
+                        </h1>
+                    </b:column>
+                </b:row>
+
+
+                <b:container fluid="true" id="student_activities">
+
+                    <b:row>
+                        <b:column rendered="#{scheduleController.alertType != 0}" style="padding-bottom: 20px">
+                            <b:alert closable="true" rendered="#{scheduleController.alertType == 1}"
+                                     severity="success"
+                                     style="white-space: pre-wrap;">#{msgs.msgSuccessfullyMarked}</b:alert>
+
+                            <b:alert closable="true" rendered="#{scheduleController.alertType == 4}"
+                                     severity="info"
+                                     style="white-space: pre-wrap;">#{scheduleController.messageContent}</b:alert>
+
+                            <b:alert closable="true" rendered="#{scheduleController.alertType == 3}"
+                                     severity="warning" style="white-space: pre-wrap;">#{scheduleController.messageContent}</b:alert>
+
+                        </b:column>
+                    </b:row>
+
+                    <b:row>
+                        <b:column medium-screen="6">
+                            <b:panel>
+                                <h:form>
+
+                                    <h4><label class="text-primary"> #{msgs.checkYourActivity}</label></h4>
+                                    <b:column rendered="#{scheduleController.weekReservations.size() == 0}">
+                                         <h4><label class="text-warning">
+                                            #{msgs.noYourActivity}
+                                        </label>
+                                    </h4>
+                                    </b:column>
+                                   
+                                    <h:selectManyCheckbox  layout="pageDirection"
+                                                           value="#{scheduleController.myChosenReservationsId}">
+                                        
+                                        <f:selectItems var="item" value="#{scheduleController.weekReservations}"
+                                                       itemLabel="#{item.description}  -  #{item.course.courseName}" itemValue="#{item.reservationID}"/><br/>
+                                    </h:selectManyCheckbox>
+                                    <b:commandButton  value="#{msgs.mark}" 
+                                                      rendered="#{scheduleController.weekReservations.size() > 0}"
+                                                      ajax="true"
+                                                      update="student_activities" 
+                                                      onclick="ajax:scheduleController.mark()"    
+                                                      look="warning" style="width: 100%;margin-bottom: 20px;margin-top: 30px;"  />
+                                </h:form>                               
+
+                            </b:panel>
+                        </b:column>
+                        <b:column medium-screen="6">
+                            <h:form>
+                                <b:row>
+                                    <b:column>
+
+                                        <h:panelGroup>
+                                            <b:column >
+                                                <p:schedule id="scheduler" widgetVar="myschedule" 
+                                                            value="#{scheduleController.model}" allDaySlot="false" firstHour="8"
+                                                            style="margin-bottom: 50px; margin-top: 30px"
+                                                            axisFormat="HH:mm"
+                                                            rightHeaderTemplate="false"
+                                                            view="agendaWeek" maxTime="23" minTime="8" slotMinutes="15" >
+
+                                                    <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}"
+                                                            update="eventDetails" oncomplete="PF('eventDialog').show();" />
+
+
+
+                                                </p:schedule>
+                                            </b:column>
+                                        </h:panelGroup>   
+
+                                        <p:dialog widgetVar="eventDialog" 
+                                                  header="#{msgs.reservationDetail}" 
+                                                  modal="true" height="400" width="500"
+                                                  showEffect="fade" hideEffect="fade">
+                                            <b:row>
+                                                <b:column medium-screen="12" id="eventDetails">
+                                                    <b:row style="margin-bottom: 10px;">
+                                                        <b:column medium-screen="6" >
+                                                            <label class="text-info"> #{msgs.description}</label>
+                                                        </b:column>
+                                                        <b:column medium-screen="6" >
+                                                            #{scheduleController.selectedReservation.description}
+                                                        </b:column>
+                                                    </b:row>
+                                                    <hr/>
+                                                    <b:row style="margin-bottom: 10px;">
+                                                        <b:column medium-screen="6" >
+                                                            <label class="text-info"> #{msgs.classroom}</label>
+                                                        </b:column>
+                                                        <b:column medium-screen="6" >
+                                                            #{scheduleController.selectedReservation.classRoom.classRoomName}
+                                                        </b:column>
+                                                    </b:row>
+                                                    <b:row style="margin-bottom: 10px;">
+                                                        <b:column medium-screen="6" >
+                                                            <label class="text-info"> #{msgs.startTime}</label>
+                                                        </b:column>
+                                                        <b:column medium-screen="6" >
+
+                                                            #{scheduleController.selectedReservation.dateToShow}  #{scheduleController.selectedReservation.timeToShow}
+
+                                                        </b:column>
+                                                    </b:row>
+
+                                                    <b:row style="margin-bottom: 10px;">
+                                                        <b:column medium-screen="6" >
+                                                            <label class="text-info"> #{msgs.endTime}</label>
+                                                        </b:column>
+                                                        <b:column medium-screen="6" >
+                                                            #{scheduleController.selectedReservation.dateEndToShow}  #{scheduleController.selectedReservation.timeEndToShow}
+                                                        </b:column>
+                                                    </b:row>
+                                                    <hr/>
+                                                    <b:row style="margin-bottom: 10px;">
+                                                        <b:column medium-screen="6" >
+                                                            <label class="text-info"> #{msgs.courseName}</label>
+                                                        </b:column>
+                                                        <b:column medium-screen="6">
+                                                            #{scheduleController.selectedReservation.course.courseName}
+                                                        </b:column>
+                                                    </b:row>
+                                                    <b:row style="margin-bottom: 10px;">
+                                                        <b:column medium-screen="6" >
+                                                            <label class="text-info"> #{msgs.teacher}</label>
+                                                        </b:column>
+                                                        <b:column medium-screen="6" >
+
+                                                            #{scheduleController.selectedReservation.teacher.firstName} #{scheduleController.selectedReservation.teacher.surrName}
+
+                                                        </b:column>
+                                                    </b:row>                                      
+
+                                                    <b:row style="margin-bottom: 20px;">
+                                                        <b:column medium-screen="6" >
+                                                            <label class="text-info"> #{msgs.purpose}</label>
+                                                        </b:column>
+                                                        <b:column medium-screen="6" >
+                                                            #{scheduleController.selectedReservation.purpose}
+
+                                                        </b:column>
+                                                    </b:row>
+                                                </b:column>
+
+                                            </b:row>
+                                            <b:row>
+                                                <b:column>                                                  
+
+                                                </b:column>
+                                            </b:row>
+                                            <b:row>
+                                                <b:column>                                                  
+                                                    <b:button value="#{msgs.close}" onclick="PF('eventDialog').hide();" 
+                                                              class="btn btn-info" style="width: 100%;margin-top: 30px;" />
+                                                </b:column>
+                                            </b:row>
+                                        </p:dialog>   
+                                    </b:column>
+                                </b:row>
+                            </h:form>
+                        </b:column>
+
+                    </b:row>
+                    #{scheduleController.setAlertType(0)}
+                    #{scheduleController.setMessageContent("")}
+                </b:container>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>

@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet name="css/custom.css"/>
+        <title>
+            <ui:insert name="windowTitle">
+                FON e-rezervacije
+            </ui:insert>
+        </title>
+    </h:head>
+
+    <h:body>
+        <b:container fluid="true" class="navbar-fixed-top">
+            <ui:insert name="heading">
+                <b:navBar brandHref="#" >
+
+                    <!-- Following line is needed for TBS 3.0.1 (panel content overflow issue) -->
+                    <b:navbarLinks pull="right"><b:navLink value="" href="#"></b:navLink></b:navbarLinks>
+                    <b:navbarLinks pull="right">
+                        <b:navLink value="#{msgs.changePassword}" href="change_password.xhtml"></b:navLink>
+
+                        <b:dropMenu value="#{msgs.register}"  >
+                            <b:navLink value="#{msgs.registerStudent}" href="register_student.xhtml"></b:navLink>
+                            <b:navLink value="#{msgs.registerTeacher}" href="register_teacher.xhtml"></b:navLink>
+                            <b:navLink value="#{msgs.registerAdmin}" href="register_admin.xhtml"></b:navLink>
+
+                        </b:dropMenu>
+                    </b:navbarLinks>
+
+
+                </b:navBar>
+
+            </ui:insert>
+        </b:container>
+        <div id="headerClearing"></div>
+
+        <b:container fluid="true">
+            <b:row>
+                <b:column medium-screen="10">
+                    <ui:insert name="content"/>
+                </b:column>
+            </b:row>
+
+        </b:container>
+
+        <b:container style="position: fixed; float: bottom">
+
+        </b:container>
+    </h:body>
+
+</html>

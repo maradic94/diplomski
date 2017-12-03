@@ -1,0 +1,111 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <body>
+        <ui:composition template="../resources/templates/admin_main_template.xhtml">
+
+
+            <ui:define name="windowTitle">
+                #{msgs.addNewClassRoom}
+            </ui:define>
+
+            <ui:define name="content">
+
+                <b:row>
+                    <b:column offset="3" span="6">
+                        <h1 style="padding-bottom: 50px">
+                            #{msgs.addNewClassRoom}
+                        </h1>
+                    </b:column>
+                </b:row>
+
+                <b:container fluid="true" id="classRoomDiv">
+                    <h:form id="addClassroom">
+
+
+                        <b:row >
+                            <b:column offset="2" span="6" rendered="#{classRoomController.alertType != 0}" style="padding-bottom: 20px">
+                                <b:alert closable="true"  rendered="#{classRoomController.alertType == 3}" 
+                                         style="white-space: pre-wrap;" severity="warning">#{classRoomController.messageContent}</b:alert>
+
+                                <b:alert closable="true"  rendered="#{classRoomController.alertType == 1}" style="white-space: pre-wrap;"
+                                         severity="success">#{classRoomController.messageContent}</b:alert>
+
+                                <b:alert closable="true"  rendered="#{classRoomController.alertType == 4}" style="white-space: pre-wrap;"
+                                         severity="info">#{classRoomController.messageContent}</b:alert>
+                            </b:column>
+                        </b:row>
+
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="2">
+                                <b:inputText value="#{classRoomController.classRoomName}" label="#{msgs.name}" 
+                                             required="true" renderLabel="true"  placeholder="#{msgs.name}"/>
+                            </b:column>
+
+                        </b:row>
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="2">
+                                <b:inputText value="#{classRoomController.capacity}" label="#{msgs.capacity}" 
+                                             required="true" renderLabel="true"  placeholder="#{msgs.capacity}"/>
+                            </b:column>
+
+                        </b:row>
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="2">
+                                <b:inputText  value="#{classRoomController.computerNum}" 
+                                              required="true" renderLabel="true"  label="#{msgs.numComputers}" placeholder="#{msgs.numComputers}"/>
+                            </b:column>
+
+                        </b:row>
+
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="2">
+                                <h:selectBooleanCheckbox value="#{classRoomController.hasMain}"/> &nbsp; #{msgs.hasMain}                                                  
+                            </b:column>
+                        </b:row>
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="2">
+                                <h:selectBooleanCheckbox value="#{classRoomController.hasWhiteBoard}"/> &nbsp; #{msgs.hasWhiteBoard}                                                  
+                            </b:column>
+                        </b:row>
+
+                        <br/>
+                        <b:row >
+                            <b:column medium-screen="6" offset="2">
+                                <label>#{msgs.location}</label>
+                                <b:selectOneMenu value="#{classRoomController.location}" >
+                                    <f:selectItems var="item" value="#{classRoomController.allLocations}" itemLabel="#{item.locationName}" itemValue="#{item.locationName}"/>
+                                </b:selectOneMenu>
+                            </b:column>
+                        </b:row>
+
+                        <b:row>
+                            <b:column span="6" offset="2">
+                                <b:commandButton value="#{msgs.add}"  look="success"
+                                                 ajax="true"
+                                                 update="classRoomDiv"
+                                                 onclick="ajax:classRoomController.insertNewClassRoom()" style="width:100%" />
+                            </b:column>
+
+
+                        </b:row>
+                    </h:form>
+                </b:container>
+
+
+            </ui:define>
+
+
+
+        </ui:composition>
+    </body>
+</html>

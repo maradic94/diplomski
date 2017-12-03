@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <body>
+        <ui:composition template="../resources/templates/admin_main_template.xhtml">
+
+
+            <ui:define name="windowTitle">
+                #{msgs.adminHome}
+            </ui:define>
+
+            <ui:define name="content">
+
+                <b:row>
+                    <b:column offset="4" span="6">
+                        <h1 style="padding-bottom: 50px">
+                            #{msgs.approveUserRequest}
+
+                        </h1>
+                    </b:column>
+                </b:row>
+
+                <b:row>
+                    <h:form id = "users_approved">
+
+                        <b:row>
+                            <b:column span="11" style="margin-left: 40px;padding-bottom: 20px;" rendered="#{requestController.alertType != 0}">
+                                <b:alert closable="true" rendered="#{requestController.alertType == 1}"
+                                         severity="success"  style="white-space: pre-wrap;">#{requestController.messageContent}</b:alert>
+
+                                <b:alert closable="true" rendered="#{requestController.alertType == 2}"
+                                         severity="danger"  style="white-space: pre-wrap;">#{requestController.messageContent}</b:alert>
+
+
+                            </b:column>
+                        </b:row>
+
+
+                        <b:column span="11" style="margin-left: 40px;">
+                            <b:dataTable value="#{requestController.userRequests}" var="user" styleClass="table table-striped table-bordered"
+                                         style="width:100%">
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.username}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.userName}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.firstName}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.firstName}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.surrname}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.surrName}"/>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.email}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.email}"/>
+                                </h:column>
+
+                                <b:row>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.city}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.city}"/>
+                                </b:row>
+
+                                <b:row>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.telephone}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.telephone}"/>
+                                </b:row>
+
+                                <b:row>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.gender}" />
+                                    </f:facet>
+                                    <b:iconAwesome name="venus" rendered="#{!user.isMale()}"/>
+                                    <b:iconAwesome name="mars" rendered="#{user.isMale()}"/>
+                                </b:row>
+
+                                <b:row>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.jmbg}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.JMBG}"/>
+                                </b:row>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.approveUser}" />
+                                    </f:facet>
+                                    <b:commandButton value="#{msgs.approve}" 
+                                                     class="btn btn-primary" 
+                                                     ajax = "true"
+                                                     update="users_approved"
+                                                     onclick="ajax:requestController.approveUser(user)" style="width: 100%;"/>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.denyUser}" />
+                                    </f:facet>
+                                    <b:commandButton value="#{msgs.deny}" 
+                                                     class="btn btn-warning" 
+                                                     ajax = "true"
+                                                     update="users_approved"
+                                                     onclick="ajax:requestController.denyUser(user)" style="width: 100%;"/>
+                                </h:column>
+
+                            </b:dataTable>
+                        </b:column>
+                    </h:form>
+                </b:row>
+            </ui:define>
+
+
+
+        </ui:composition>
+    </body>
+</html>

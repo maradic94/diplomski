@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui">
+    <body>
+        <ui:composition>
+            <b:panel look="primary"  title="#{msgs.navigation}" collapsible="false">
+                <b:panel>
+                    <b:listLinks>
+                        <b:iconAwesome name="home"> &nbsp;#{msgs.profile}</b:iconAwesome>                   
+
+                        <b:navLink href="./student_profile.xhtml" value="#{msgs.myProfile}" />
+
+                    </b:listLinks>
+                </b:panel>
+
+                <b:panel>
+                    <b:listLinks>
+                        <b:iconAwesome name="calendar"> &nbsp;#{msgs.activity}</b:iconAwesome>
+                        <b:navLink href="./week_activity.xhtml" value="#{msgs.perWeek}"></b:navLink>
+                        <b:navLink href="./daily_activity.xhtml" value="#{msgs.daily} " />
+                    </b:listLinks>
+                </b:panel>
+            </b:panel>
+        </ui:composition>
+    </body>
+</html>

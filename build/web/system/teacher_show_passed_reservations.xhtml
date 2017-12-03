@@ -1,0 +1,140 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <body>
+        <ui:composition template="../resources/templates/teacher_main_template.xhtml">
+
+
+            <ui:define name="windowTitle">
+                #{msgs.showReservations}
+            </ui:define>
+
+            <ui:define name="content">
+                <b:row>
+                    <b:column offset="4" span="6">
+                        <h1 style="padding-bottom: 50px">
+                            #{msgs.showPassedReservations}
+                        </h1>
+                    </b:column>
+                </b:row>
+
+                <b:row>
+                    <h:form id = "passed_reservation">
+                        <b:row>
+                            <b:column span="11" rendered="#{reservationController.alertType != 0}" style="padding-bottom: 20px;margin-left: 40px;">
+                                <b:alert closable="true" rendered="#{reservationController.alertType == 1}"
+                                         severity="success" style="white-space: pre-wrap;">#{reservationController.messageContent}</b:alert>
+                                <b:alert closable="true" rendered="#{reservationController.alertType == 2}"
+                                          severity="danger" style="white-space: pre-wrap;">#{reservationController.messageContent}</b:alert>
+                            </b:column>
+                        </b:row>
+                        <b:column span="11" style="margin-left: 40px;">
+                            <b:dataTable value="#{reservationController.passedReservations}" var="reservation" styleClass="table table-striped table-bordered"
+                                         style="width:100%">
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.description}" />
+                                    </f:facet>
+                                    <h:outputText value="#{reservation.description}" />
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.courseName}" />
+                                    </f:facet>
+                                    <h:outputText value="#{reservation.course.courseName}" rendered="#{reservation.course != null}"/>
+                                    <b:iconAwesome name="times" rendered="#{reservation.course == null}"/>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.startDate}" />
+                                    </f:facet>
+                                    <h:outputText value="#{reservation.getDateToShow()}"/>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.startTime}" />
+                                    </f:facet>
+                                    <h:outputText value="#{reservation.getTimeToShow()}"/>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.endDate}" />
+                                    </f:facet>
+                                    <h:outputText value="#{reservation.getDateEndToShow()}"/>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.endTime}" />
+                                    </f:facet>
+                                    <h:outputText value="#{reservation.getTimeEndToShow()}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.classroom}" />
+                                    </f:facet>
+                                    <h:outputText value="#{reservation.classRoom.classRoomName}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.purpose}" />
+                                    </f:facet>
+                                    <h:outputText value="#{reservation.purpose}"/>
+                                </h:column>
+
+
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.used}" />
+                                    </f:facet>
+                                    <b:iconAwesome name="check" rendered="#{reservation.isUsed}"/>
+                                    <b:iconAwesome name="times" rendered="#{!reservation.isUsed}"/>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.setUsed}" />
+                                    </f:facet>
+                                    <b:dropMenu value="#{msgs.used}"  >
+                                        <b:commandButton value="#{msgs.setUsed}" 
+                                                         look="info"
+                                                         ajax="true"
+                                                         size="sm"
+                                                         update="passed_reservation"
+                                                         style="width: 100%;"
+                                                         onclick="ajax:reservationController.setReservationUsed(reservation)">
+                                        </b:commandButton>
+                                        <b:commandButton value="#{msgs.setUnUsed}"
+                                                         size="xs"
+                                                         look="warning"
+                                                         style="width: 100%;"
+                                                         ajax="true"
+                                                         update="passed_reservation"
+                                                         onclick="ajax:reservationController.setReservationUnUsed(reservation)">
+                                        </b:commandButton>
+
+                                    </b:dropMenu>
+
+                                </h:column>
+
+                            </b:dataTable>
+                        </b:column>
+                    </h:form>
+                </b:row>
+            </ui:define>
+
+
+
+        </ui:composition>
+    </body>
+</html>

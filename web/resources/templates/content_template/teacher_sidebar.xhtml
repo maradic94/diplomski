@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui">
+    <body>
+        <ui:composition>
+            <b:panel look="primary"  title="#{msgs.navigation}" collapsible="false">
+                <b:panel>
+                    <b:listLinks>
+                        <b:iconAwesome name="home"> &nbsp;#{msgs.profile}</b:iconAwesome>                   
+
+                        <b:navLink href="./teacher_profile.xhtml" value="#{msgs.myProfile}" />
+                    </b:listLinks>
+                </b:panel>
+             
+                <b:panel>
+                    <b:listLinks>
+                        <b:iconAwesome name="calendar"> &nbsp;#{msgs.classrooms}</b:iconAwesome>
+                        <b:navLink href="./teacher_show_classroom.xhtml" value="#{msgs.showClassRooms}"></b:navLink>
+                        <b:navLink href="./teacher_search_classroom.xhtml" value="#{msgs.searchClassRooms}" />
+                    </b:listLinks>
+                </b:panel>
+                
+                 <b:panel>
+                    <b:listLinks>
+                        <b:icon name="education"> &nbsp;#{msgs.reservations}</b:icon>                  
+                        <b:navLink href="./teacher_show_current_reservations.xhtml" value="#{msgs.showCurrentReservations}" />
+                        <b:navLink href="./teacher_show_passed_reservations.xhtml" value="#{msgs.showPassedReservations}" />
+                    </b:listLinks>
+                     
+                </b:panel>
+            </b:panel>
+        </ui:composition>
+    </body>
+</html>

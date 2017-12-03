@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="resources/templates/login_template.xhtml">
+            <ui:define name="windowTitle">
+                #{msgs.loginPage}
+            </ui:define>
+
+            <ui:define name="content">
+
+
+                <b:container fluid="true">
+                    <h:form id="languageForm">
+                         <b:commandButton value="#{msgs.languageType1}" look="success" action="#{languageController.changeLanguage('en')}" />
+                         <b:commandButton value="#{msgs.languageType2}" look="success" action="#{languageController.changeLanguage('sr')}" />
+
+                        </h:form> 
+                    <h:form id="loginForm">
+                        <b:row>
+                            <b:column offset="4" span="6">
+                                <h1 style="padding-bottom: 50px">
+                                    #{msgs.loginGreeting}
+
+                                </h1>
+                            </b:column>
+                        </b:row>
+
+                        <b:row >
+                            <b:column offset="4" span="6" rendered="#{loginController.alertType != 0}" style="padding-bottom: 20px">
+                                <b:alert closable="true"  rendered="#{loginController.alertType == 3}" 
+                                         severity="warning" style="white-space: pre-wrap;">#{loginController.messageContent}</b:alert>
+
+                                <b:alert closable="true"  rendered="#{loginController.alertType == 2}" 
+                                         severity="danger" style="white-space: pre-wrap;">#{loginController.messageContent}</b:alert>
+
+                                <b:alert closable="true"  rendered="#{loginController.alertType == 4}" 
+                                         severity="info" style="white-space: pre-wrap;">#{loginController.messageContent}</b:alert>
+                            </b:column>
+                        </b:row>
+
+
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="4">
+                                <b:inputText id="userName" value="#{loginController.userName}" label="#{msgs.username}" 
+                                             required="true" renderLabel="true"  placeholder="#{msgs.username}"/>
+                            </b:column>
+
+                        </b:row>
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="4">
+                                <b:inputSecret id="userPass" value="#{loginController.userPass}" 
+                                               required="true" renderLabel="true"  label="#{msgs.password}" placeholder="#{msgs.password}"/>
+                            </b:column>
+
+                        </b:row>
+
+                        <b:row>
+                            <b:column span="6" offset="4">
+                                <b:commandButton value="#{msgs.login}"  look="success" action="#{loginController.userLogin()}" style="width:100%" />
+                            </b:column>
+
+
+                        </b:row>
+                    </h:form>
+                </b:container>
+
+
+
+
+
+            </ui:define>
+
+
+        </ui:composition>
+
+
+    </h:body>
+</html>
+

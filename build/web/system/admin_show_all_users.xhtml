@@ -1,0 +1,467 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <body>
+        <ui:composition template="../resources/templates/admin_main_template.xhtml">
+
+
+            <ui:define name="windowTitle">
+                #{msgs.showAllUsers}
+            </ui:define>
+
+            <ui:define name="content">
+
+                <b:row>
+                    <b:column offset="4" span="6">
+                        <h1 style="padding-bottom: 50px">
+                            #{msgs.showAllUsers}
+
+                        </h1>
+                    </b:column>
+                </b:row>
+
+
+                <b:row id="user_content">
+                    <b:row>
+                        <b:column span="11" rendered="#{usersController.messageType != 0}" style="padding-bottom: 20px; margin-left: 50px;">
+                            <b:alert closable="true" rendered="#{usersController.messageType == 4}"
+                                     severity="info"  style="white-space: pre-wrap;">#{usersController.messageContent}</b:alert>
+                            <b:alert closable="true" rendered="#{usersController.messageType == 1}"
+                                     severity="success"  style="white-space: pre-wrap;">#{usersController.messageContent}</b:alert>            
+                            <b:alert closable="true" rendered="#{usersController.messageType == 2}"
+                                     severity="danger"  style="white-space: pre-wrap;">#{usersController.messageContent}</b:alert>
+                        </b:column>
+                    </b:row>
+
+                    <b:column span="11" rendered="#{usersController.showUser == true}" style="margin-left: 40px;">
+
+                        <b:panel style="width: 100%;">
+
+                            <b:row>
+
+                                <b:column medium-screen="4">
+                                    <b:panel>
+                                        <b:row>
+                                            <b:column medium-screen="4" offset="1">
+                                                <p class="text-info">#{msgs.username}</p> 
+                                            </b:column>
+                                            <b:column medium-screen="2">
+                                                #{usersController.chosenUser.userName}
+                                            </b:column>
+                                        </b:row>
+
+                                        <b:row>
+                                            <b:column medium-screen="4" offset="1">
+                                                <p class="text-info">#{msgs.firstName}</p> 
+                                            </b:column>
+                                            <b:column medium-screen="2">
+                                                #{usersController.chosenUser.firstName}
+                                            </b:column>
+                                        </b:row>
+
+                                        <b:row>
+                                            <b:column medium-screen="4" offset="1">
+                                                <p class="text-info">#{msgs.surrname}</p> 
+                                            </b:column>
+                                            <b:column medium-screen="2">
+                                                #{usersController.chosenUser.surrName}
+                                            </b:column>
+                                        </b:row>
+
+                                        <b:row>
+                                            <b:column medium-screen="4" offset="1">
+                                                <p class="text-info">#{msgs.email}</p> 
+                                            </b:column>
+                                            <b:column medium-screen="2">
+                                                #{usersController.chosenUser.email}
+                                            </b:column>
+                                        </b:row>
+
+                                        <b:row>
+                                            <b:column medium-screen="4" offset="1">
+                                                <p class="text-info">#{msgs.city}</p> 
+                                            </b:column>
+                                            <b:column medium-screen="2">
+                                                #{usersController.chosenUser.city}
+                                            </b:column>
+                                        </b:row>
+
+                                        <b:row>
+                                            <b:column medium-screen="4" offset="1">
+                                                <p class="text-info">#{msgs.telephone}</p> 
+                                            </b:column>
+                                            <b:column medium-screen="2">
+                                                #{usersController.chosenUser.telephone}
+                                            </b:column>
+                                        </b:row>
+
+                                        <b:row>
+                                            <b:column medium-screen="4" offset="1">
+                                                <p class="text-info">#{msgs.gender}</p> 
+                                            </b:column>
+                                            <b:column medium-screen="2" >
+                                                <b:iconAwesome name="venus" rendered="#{!usersController.chosenUser.isMale()}"/>
+                                                <b:iconAwesome name="mars" rendered="#{usersController.chosenUser.isMale()}"/>
+                                            </b:column>
+
+                                        </b:row>
+
+                                        <b:row>
+                                            <b:column medium-screen="4" offset="1">
+                                                <p class="text-info">#{msgs.jmbg}</p> 
+                                            </b:column>
+                                            <b:column medium-screen="2">
+                                                #{usersController.chosenUser.JMBG}
+                                            </b:column>
+                                        </b:row>
+                                    </b:panel>
+                                </b:column>
+
+                                <b:column medium-screen="5">
+                                    <b:panel>
+                                        <b:row>
+                                            <b:column medium-screen="4" offset="1">
+                                                <p class="text-info">#{msgs.userType}</p> 
+                                            </b:column>
+                                            <b:column medium-screen="2">
+                                                #{usersController.chosenUser.type}
+                                            </b:column>
+                                        </b:row>
+
+                                        <!-- student -->
+                                        <b:row rendered="#{usersController.chosenUser.typeNum == 2}">
+                                            <b:column medium-screen="4" offset="1">
+                                                <p class="text-info">#{msgs.year}</p> 
+                                            </b:column>
+                                            <b:column medium-screen="2">
+                                                #{usersController.chosenStudent.year}
+                                            </b:column>
+                                        </b:row>
+
+                                        <b:row rendered="#{usersController.chosenUser.typeNum == 2}" style="margin-bottom: 158px;">
+                                            <b:column medium-screen="4" offset="1">
+                                                <p class="text-info">#{msgs.moduleName}</p> 
+                                            </b:column>
+                                            <b:column medium-screen="4">
+                                                #{usersController.chosenStudent.module.moduleName}
+                                            </b:column>
+                                        </b:row>
+
+
+                                        <!-- teacher -->
+                                        <b:row rendered="#{usersController.chosenUser.typeNum == 3}">
+                                            <b:column medium-screen="4" offset="1">
+                                                <p class="text-info">#{msgs.teacherOffice}</p> 
+                                            </b:column>
+                                            <b:column medium-screen="2">
+                                                #{usersController.chosenTeacher.officeNum}
+                                            </b:column>
+                                        </b:row>
+
+                                        <b:row rendered="#{usersController.chosenUser.typeNum == 3}" style="margin-bottom: 158px;">
+                                            <b:column medium-screen="4" offset="1">
+                                                <p class="text-info">#{msgs.education}</p> 
+                                            </b:column>
+                                            <b:column medium-screen="2">
+                                                #{usersController.chosenTeacher.education}
+                                            </b:column>
+                                        </b:row>       
+                                    </b:panel>
+                                </b:column>
+
+                                <b:column medium-screen="2">
+                                    <b:row>
+                                        <b:column   offset="1">
+                                            <b:image value="./../images/#{usersController.chosenUser.picture}" name="userImage" 
+                                                     style="width: 150px; height: 100px; margin-bottom: 55px;" class="userImageClass"/>
+
+                                        </b:column>
+                                    </b:row>
+
+                                </b:column>
+
+                            </b:row>
+
+
+
+
+                            <b:row rendered="#{usersController.chosenUser.typeNum == 3}">
+
+                                <b:column rendered="#{usersController.allTeacherReservations.size() > 0}">
+                                    <h3> <label class="text-info"> #{msgs.showCurrentReservations}</label></h3>
+                                </b:column>
+
+                                <b:column rendered="#{usersController.allTeacherReservations.size() > 0}">
+                                    <b:dataTable value="#{usersController.allTeacherReservations}" 
+                                                 var="reservation" styleClass="table table-striped table-bordered"
+                                                 style="width:100%">
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.description}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.description}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.classroom}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.classRoom.classRoomName}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.startDate}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.getDateToShow()}"/>
+                                        </h:column>
+
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.startTime}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.getTimeToShow()}"/>
+                                        </h:column>
+
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.endDate}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.getDateEndToShow()}"/>
+                                        </h:column>
+
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.endTime}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.getTimeEndToShow()}"/>
+                                        </h:column>
+
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.purpose}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.purpose}"/>
+                                        </h:column>
+
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.courseName}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.course.courseName}" rendered="#{reservation.course != null}"/>
+                                            <b:iconAwesome name="times" rendered="#{reservation.course == null}"/>
+                                        </h:column>
+
+
+                                    </b:dataTable>
+                                
+                                </b:column>
+                                <b:column rendered="#{usersController.allTeacherReservations.size() == 0}">
+                                    <h3> <label> #{msgs.noCurrentReservation}</label></h3>
+                                    <hr/>
+                                </b:column>
+
+                            </b:row>
+
+                            <b:row rendered="#{usersController.chosenUser.typeNum == 3}" style="margin-bottom: 50px;">
+                                <b:column rendered="#{usersController.allPassedTeacherReservations.size() > 0}">
+                                    <h3> <label class="text-info"> #{msgs.showPassedReservations}</label></h3>
+
+                                </b:column>
+                                <b:column>
+                                    <b:dataTable value="#{usersController.allPassedTeacherReservations}"
+                                                 rendered="#{usersController.allPassedTeacherReservations.size() > 0}"
+                                                 var="reservation" styleClass="table table-striped table-bordered"
+                                                 style="width:100%">
+
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.courseName}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.course.courseName}" rendered="#{reservation.course != null}"/>
+                                            <b:iconAwesome name="times" rendered="#{reservation.course == null}"/>
+                                        </h:column>
+
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.classroom}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.classRoom.classRoomName}" />
+                                        </h:column>
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.startDate}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.getDateToShow()}"/>
+                                        </h:column>
+
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.startTime}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.getTimeToShow()}"/>
+                                        </h:column>
+
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.endDate}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.getDateEndToShow()}"/>
+                                        </h:column>
+
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.endTime}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.getTimeEndToShow()}"/>
+                                        </h:column>
+
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.purpose}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.purpose}"/>
+                                        </h:column>
+
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.description}" />
+                                            </f:facet>
+                                            <h:outputText value="#{reservation.description}" />
+                                        </h:column>
+
+                                        <h:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="#{msgs.used}" />
+                                            </f:facet>
+                                            <b:iconAwesome name="check" rendered="#{reservation.isUsed}"/>
+                                            <b:iconAwesome name="times" rendered="#{!reservation.isUsed}"/>
+                                        </h:column>
+
+                                    </b:dataTable>
+                                 
+                                </b:column>
+                                <b:column rendered="#{usersController.allPassedTeacherReservations.size() == 0}">
+                                    <h3> <label> #{msgs.noPassedReservation}</label></h3>
+                                    <hr/>
+                                </b:column>
+
+                            </b:row>
+                        </b:panel>
+                    </b:column>
+                </b:row>
+
+
+                <b:row id ="user_table">
+                    <h:form>
+                        <b:column span="11" style="margin-left: 40px;margin-top: 30px;">
+
+                            <b:dataTable value="#{usersController.allUsers}" var="user" styleClass="table table-striped table-bordered"
+                                         style="width:100%">
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.username}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.userName}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.firstName}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.firstName}" />
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.surrname}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.surrName}"/>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.email}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.email}"/>
+                                </h:column>
+
+                                <b:row>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.city}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.city}"/>
+                                </b:row>
+
+                                <b:row>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.telephone}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.telephone}"/>
+                                </b:row>
+                                <b:row>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.gender}" />
+                                    </f:facet>
+                                    <b:iconAwesome name="venus" rendered="#{!user.isMale()}"/>
+                                    <b:iconAwesome name="mars" rendered="#{user.isMale()}"/>
+                                </b:row>
+
+                                <b:row>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.jmbg}" />
+                                    </f:facet>
+                                    <h:outputText value="#{user.JMBG}"/>
+                                </b:row>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.role}" />
+                                    </f:facet>                                    
+                                    <h:outputText value="#{user.type}"/>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.isUserApproved}" />
+                                    </f:facet>                  
+                                    <b:iconAwesome name="ban" rendered="#{user.isApproved == -1}"/>
+                                    <b:iconAwesome name="check" rendered="#{user.isApproved == 1}"/>
+                                    <b:iconAwesome name="times" rendered="#{user.isApproved == 0}"/>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.showUser}" />
+                                    </f:facet>
+                                    <b:commandButton value="#{msgs.show}"  
+                                                     ajax="true" onclick="ajax:usersController.showUser(user)" 
+                                                     update="user_content" class="btn btn-info"  style="width: 100%;"/>
+                                </h:column>
+
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.deactivateUser}" />
+                                    </f:facet>
+                                    <b:commandButton value="" icon="trash" rendered="#{user.typeNum == 2}"
+                                                     ajax="true" onclick="ajax:usersController.deactivateUser(user)"
+                                                     update="user_content user_table" 
+                                                     class="btn btn-primary"  style="width: 100%;"/>
+
+                                    <b:commandButton value="#{msgs.deactivate}" rendered="#{user.typeNum == 3}"
+                                                     ajax="true" onclick="ajax:usersController.deactivateUser(user)"
+                                                     update="user_content user_table" class="btn btn-default"  style="width: 100%;"/>
+                                </h:column>
+
+                            </b:dataTable>
+                        </b:column>
+                    </h:form>
+                </b:row>
+
+            </ui:define>
+
+
+
+        </ui:composition>
+    </body>
+</html>

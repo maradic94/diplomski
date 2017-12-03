@@ -1,0 +1,171 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="resources/templates/register_template.xhtml">
+            <ui:define name="windowTitle">
+                #{msgs.registerPage}
+            </ui:define>
+
+            <ui:define name="content">
+
+                <h:form id="registerForm">
+                    <b:container fluid="true">
+                        <b:row>
+                            <b:column offset="4" span="6">
+                                <h1 style="padding-bottom:50px">
+                                    #{msgs.registerGreeting}
+                                </h1>
+                            </b:column>
+                        </b:row>                       
+
+                        <b:row >
+                            <b:column offset="4" span="6" rendered="#{registerController.alertType != 0}" style="padding-bottom: 20px">
+                                <b:alert closable="true" rendered="#{registerController.alertType == 1}"
+                                         severity="success" style="white-space: pre-wrap;">#{msgs.msgSuccessfullyRegister}</b:alert>
+
+                                <b:alert closable="true" rendered="#{registerController.alertType == 2}"
+                                         severity="danger" style="white-space: pre-wrap;">#{msgs.msgBadRegister}</b:alert>
+
+                                <b:alert closable="true" rendered="#{registerController.alertType == 3}"
+                                         severity="warning" style="white-space: pre-wrap;">#{registerController.messageContent}</b:alert>
+
+                            </b:column>
+                        </b:row>
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="4">
+                                <b:inputText id="userName" value="#{registerController.userName}" label="#{msgs.username}"  placeholder="#{msgs.username}"
+                                             required="true" renderLabel="true" />
+                            </b:column>
+
+                        </b:row>
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="4">
+                                <b:inputSecret id="userPass" value="#{registerController.userPass}" label="#{msgs.password}" placeholder="#{msgs.password}"
+                                               required="true" renderLabel="true" />
+                            </b:column>
+
+                        </b:row>
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="4">
+                                <b:inputSecret id="userConfirmPass" value="#{registerController.userConfirmPass}" label="#{msgs.confirmPassword}" 
+                                               placeholder="#{msgs.confirmPassword}" required="true"  renderLabel="true" />
+                            </b:column>
+                        </b:row>
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="4">
+                                <b:inputText id="firstName" value="#{registerController.userFirstName}" label="#{msgs.firstName}" placeholder="#{msgs.firstName}" 
+                                             required="true" renderLabel="true" />
+                            </b:column>
+                        </b:row>
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="4">
+                                <b:inputText id="surrname" value="#{registerController.userSurrname}" label="#{msgs.surrname}" placeholder="#{msgs.surrname}"
+                                             required="true" renderLabel="true"  />
+                            </b:column>
+                        </b:row>
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="4">
+                                <b:inputText id="email" value="#{registerController.userEmail}" label="#{msgs.email}" placeholder="#{msgs.email}"
+                                             required="true"  renderLabel="true"  />
+                            </b:column>
+                        </b:row>
+                        <b:row>
+                            <b:column medium-screen="6" offset="4">
+                                <label>#{msgs.chooseGender}</label>
+                                <b:selectOneMenu value="#{registerController.userGender}" id="userGender" required="true">
+                                    <f:selectItem itemLabel="#{msgs.male}" itemValue="1"/>
+                                    <f:selectItem itemLabel="#{msgs.female}" itemValue="2"/>
+                                </b:selectOneMenu>
+                            </b:column>
+                        </b:row>
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="4">
+                                <b:inputText id="telephone" value="#{registerController.userTelephone}" label="#{msgs.telephone}" placeholder="#{msgs.telephone}"
+                                             required="true"  renderLabel="true"  />
+                            </b:column>
+                        </b:row>
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="4">
+                                <label>#{msgs.chooseCity}</label>
+                                <b:selectOneMenu value="#{registerController.userCity}" id="userCity" required="true">
+                                    <f:selectItem itemLabel="#{msgs.Belgrade}" itemValue="0"/>
+                                    <f:selectItem itemLabel="#{msgs.NewNow}" itemValue="1"/>
+                                    <f:selectItem itemLabel="#{msgs.Loznica}" itemValue="2"/>
+                                    <f:selectItem itemLabel="#{msgs.Kragujevac}" itemValue="3"/>
+                                    <f:selectItem itemLabel="#{msgs.other}" itemValue="4"/>
+                                </b:selectOneMenu>
+
+                            </b:column>
+                        </b:row>
+
+                        <b:row>
+                            <b:column medium-screen="6" offset="4">
+                                <b:inputText id="jmbg" value="#{registerController.userJMBG}" label="#{msgs.jmbg}" placeholder="#{msgs.jmbg}"
+                                             required="true"  renderLabel="true"  />
+                            </b:column>
+                        </b:row>                      
+
+                        <!-- student -->                         
+                        <b:row id="student_year">
+                            <b:column medium-screen="6" offset="4" >
+                                <label>#{msgs.chooseYear}</label>
+                                <b:selectOneMenu value="#{registerController.studentYear}">
+                                    <f:selectItem itemLabel="1" itemValue="1"/>
+                                    <f:selectItem itemLabel="2" itemValue="2"/>
+                                    <f:selectItem itemLabel="3" itemValue="3"/>
+                                    <f:selectItem itemLabel="4" itemValue="4"/>
+                                </b:selectOneMenu>
+                            </b:column>
+                        </b:row>
+
+                        <b:row id="student_module">
+                            <b:column medium-screen="6" offset="4">
+                                <label>#{msgs.chooseModule}</label>
+                                <b:selectOneMenu value="#{registerController.studentModule}" id="studentModule">
+                                    <f:selectItems var="item" value="#{registerController.allModules}" itemLabel="#{item.moduleName}" itemValue="#{item.moduleName}"/>
+                                </b:selectOneMenu>
+                            </b:column>
+                        </b:row>
+
+
+
+                        <b:row>
+                            <b:column span="6" offset="4">
+                                <h:commandButton class="btn btn-success" value="#{msgs.registerButton}"  action="#{registerController.registerStudent()}"
+
+                                                 style="width:100%" />
+                            </b:column>
+                        </b:row>
+
+                    </b:container>
+                </h:form>
+
+
+
+
+            </ui:define>
+
+
+        </ui:composition>
+
+
+    </h:body>
+</html>
+

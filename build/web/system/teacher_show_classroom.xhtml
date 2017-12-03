@@ -1,0 +1,358 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <body>
+        <ui:composition template="../resources/templates/teacher_main_template.xhtml">
+
+
+            <ui:define name="windowTitle">
+                #{msgs.teacherHome}
+            </ui:define>
+
+
+            <ui:define name="content">
+
+                <b:row>
+                    <b:column offset="4" span="6">
+                        <h1 style="padding-bottom: 50px">
+                            #{msgs.chooseClassroom} 
+                        </h1>
+                    </b:column>
+                </b:row>
+
+                <b:container fluid="true">
+
+
+                    <b:container fluid="true" id="messages" rendered="#{activityController.alertType != 0}">
+                        <b:row>
+                            <b:column style="padding-bottom: 20px">
+                                <b:alert closable="true" rendered="#{activityController.alertType == 1}"
+                                         severity="success">
+                                    #{activityController.messageContent}
+                                </b:alert>
+
+                                <b:alert closable="true" rendered="#{activityController.alertType == 3}"
+                                         severity="warning">
+                                    #{activityController.messageContent}
+                                </b:alert>
+
+                                <b:alert closable="true" rendered="#{activityController.alertType == 2}"
+                                         severity="danger">
+                                    #{activityController.messageContent}
+                                </b:alert>
+                            </b:column>
+                        </b:row>
+                    </b:container>
+
+                    <h:form>
+                        <p:dialog header="#{msgs.reserveClassroom}" widgetVar="reserveDialog"
+                                  modal="true" hideEffect="fade" showEffect="fade" height="500" width="600">
+
+                            <b:column>
+                                <b:row>
+                                    <b:column>
+                                        <b:inputText id="title" value="#{activityController.newReservation.description}" label="#{msgs.description}" 
+                                                     renderLabel="true"  placeholder="#{msgs.description}"/>
+
+                                    </b:column>                                            
+                                </b:row>
+
+
+                                <b:row>
+                                    <b:column style="margin-bottom: 10px;">
+                                        <label>#{msgs.selectPurpose}</label>
+
+                                        <b:selectOneMenu value="#{activityController.purpose}" id="purpose">
+                                            <f:selectItem itemLabel="#{msgs.lectures}" itemValue="1"/>
+                                            <f:selectItem itemLabel="#{msgs.exercises}" itemValue="2"/>
+                                            <f:selectItem itemLabel="#{msgs.lab_exercises}" itemValue="3"/>                                        
+                                            <f:selectItem itemLabel="#{msgs.consultation}" itemValue="4"/>
+                                            <f:selectItem itemLabel="#{msgs.test}" itemValue="5"/>
+                                            <f:selectItem itemLabel="#{msgs.exam}" itemValue="6"/>
+                                            <f:selectItem itemLabel="#{msgs.homework}" itemValue="7"/>
+                                            <f:selectItem itemLabel="#{msgs.project}" itemValue="8"/>
+                                            <f:selectItem itemLabel="#{msgs.specialLectures}" itemValue="9"/>
+                                            <f:selectItem itemLabel="#{msgs.graduateWork}" itemValue="10"/>
+                                            <f:selectItem itemLabel="#{msgs.masterWork}" itemValue="11"/>
+                                            <f:selectItem itemLabel="#{msgs.doctoralWork}" itemValue="12"/>
+                                            <f:selectItem itemLabel="#{msgs.other}" itemValue="13"/>
+                                        </b:selectOneMenu>
+
+                                    </b:column>                                            
+                                </b:row>
+
+                                <b:row>
+                                    <b:column>
+                                        <label>#{msgs.selectCourse}</label>
+                                        <b:selectOneMenu value="#{activityController.newReservation.course}">
+                                            <f:selectItems var="item" value="#{activityController.getTeachersCourses()}" 
+                                                           itemLabel="#{item.courseName}" itemValue="#{item}"/>
+                                        </b:selectOneMenu>
+                                    </b:column>
+                                </b:row>
+
+
+
+                                <b:column>
+                                    <b:row>
+                                        <b:panel>
+                                            <label>#{msgs.from}</label><br/>
+                                            <p:calendar id="from" value="#{activityController.newReservation.startDate}"  
+                                                        mode="popup" pattern="dd.MM.yyyy HH:mm"/>
+                                        </b:panel>
+
+                                        <b:panel >
+                                            <label>#{msgs.to}</label><br/>
+                                            <p:calendar id="to" value="#{activityController.newReservation.endDate}" 
+                                                        mode="popup" pattern="dd.MM.yyyy HH:mm"/>
+                                        </b:panel>
+                                    </b:row>
+                                </b:column>
+
+
+
+                            </b:column>
+
+                            <f:facet name="footer">
+                                <h:commandButton value="#{msgs.save}"   
+                                                 action="#{activityController.insertNewReservation()}" 
+                                                 class="btn btn-primary" style="width: 60%; margin-right: 8%;"/>
+                                <b:button value="#{msgs.close}" onclick="PF('reserveDialog').hide();" class="btn btn-default" style="width: 30%;" />
+                            </f:facet>
+
+                        </p:dialog>
+                    </h:form>
+
+                    <h:form>
+                        <b:row id="reservation_all">
+                            <b:column medium-screen="5" style="margin-right: 50px;margin-top: 22px;" >
+                                <b:panel>
+                                    <b:column>
+                                        <label>#{msgs.chooseClassroom}</label>
+                                        <b:selectOneMenu value="#{activityController.classRoom}">
+                                            <f:selectItems var="item" value="#{activityController.allClassRooms}" itemLabel="#{item.classRoomName}" itemValue="#{item}"/><br/>
+                                        </b:selectOneMenu>
+                                    </b:column>
+
+
+
+                                    <b:column>     
+                                        <b:commandButton  value="#{msgs.show}" ajax="true"
+                                                          update="reservation_all" 
+                                                          onclick="ajax:activityController.showDetails()"    
+                                                          look="primary" style="width: 100%;margin-bottom: 20px; "  />
+
+                                    </b:column>
+
+                                    <b:column>      
+                                        <b:button style="width: 100%;" look="info" value="#{msgs.reserve}"
+                                                  onclick="PF('reserveDialog').show();"/>
+                                    </b:column>
+
+
+                                    <b:row id="classroom_detail">
+                                        <b:column style="margin-top: 50px;margin-bottom: 25px;">
+                                            <h3>#{msgs.classroom} #{msgs.detail}</h3>
+                                            <b:panel>
+                                                <b:row> 
+                                                    <b:column medium-screen="6" >
+                                                        <p class="text-info">#{msgs.name}</p> 
+                                                    </b:column>
+                                                    <b:column medium-screen="6">
+                                                        #{activityController.classRoom.classRoomName}
+                                                    </b:column>
+                                                </b:row>
+
+                                                <b:row>
+                                                    <b:column medium-screen="6" >
+                                                        <p class="text-info">#{msgs.capacity}</p> 
+                                                    </b:column>
+                                                    <b:column medium-screen="6">
+                                                        #{activityController.classRoom.capacity}
+                                                    </b:column>
+                                                </b:row>
+
+                                                <b:row>
+                                                    <b:column medium-screen="6">
+                                                        <p class="text-info">#{msgs.numComputers}</p> 
+                                                    </b:column>
+                                                    <b:column medium-screen="6" >
+                                                        #{activityController.classRoom.computerNum}
+                                                    </b:column>
+                                                </b:row>
+
+
+                                                <b:row>
+                                                    <b:column medium-screen="6">
+                                                        <p class="text-info">#{msgs.locationName}</p> 
+                                                    </b:column>
+                                                    <b:column medium-screen="6">
+                                                        #{activityController.classRoom.location.locationName}
+                                                    </b:column>
+                                                </b:row>
+
+                                                <b:row>
+                                                    <b:column medium-screen="6">
+                                                        <p class="text-info">#{msgs.hasMain}</p> 
+                                                    </b:column>
+
+                                                    <b:column medium-screen="6"  rendered="#{activityController.classRoom.hasMainComputer}">
+                                                        <b:iconAwesome name="check-circle"/>
+                                                    </b:column>   
+                                                    <b:column medium-screen="6"  rendered="#{!activityController.classRoom.hasMainComputer}">
+                                                        <b:iconAwesome name="times-circle"/>
+                                                    </b:column>  
+
+
+                                                </b:row>
+
+                                                <b:row>
+                                                    <b:column medium-screen="6">
+                                                        <p class="text-info">#{msgs.hasWhiteBoard}</p> 
+                                                    </b:column>
+                                                    <b:column medium-screen="6"  rendered="#{activityController.classRoom.hasWhiteboard}">
+                                                        <b:iconAwesome name="check-circle"/>
+                                                    </b:column>   
+                                                    <b:column medium-screen="6"  rendered="#{!activityController.classRoom.hasWhiteboard}">
+                                                        <b:iconAwesome name="times-circle"/>
+                                                    </b:column>  
+
+                                                </b:row>
+
+                                            </b:panel>
+
+                                        </b:column>
+                                    </b:row>
+                                </b:panel>
+
+                            </b:column>
+
+
+                            <b:column medium-screen="6">
+
+                                <b:row id="classroom_schedule">
+
+                                    <h:panelGroup>
+                                        <b:column >
+                                            <p:schedule id="schedule" widgetVar="myschedule" 
+                                                        value="#{activityController.model}" allDaySlot="false" firstHour="8" style="margin-bottom: 50px; margin-top: 30px"
+                                                        view="agendaWeek" maxTime="23" minTime="8" slotMinutes="15" axisFormat="HH:mm"
+                                                        rightHeaderTemplate="">
+
+                                                <p:ajax event="eventSelect" listener="#{activityController.onEventSelect}"
+                                                        update="eventDetails" oncomplete="PF('eventDialog').show();" />
+
+                                            </p:schedule>
+                                        </b:column>
+                                    </h:panelGroup>   
+
+                                    <p:dialog widgetVar="eventDialog" header="#{msgs.reservationDetail}" 
+                                              modal="true" height="400" width="500"
+                                              showEffect="clip" hideEffect="clip">
+                                        <b:row>
+                                            <b:column medium-screen="12" id="eventDetails">
+                                                <b:row style="margin-bottom: 20px;">
+                                                    <b:column medium-screen="6" >
+                                                        <label class="text-info"> #{msgs.description}</label>
+                                                    </b:column>
+                                                    <b:column medium-screen="6" >
+                                                        #{activityController.reservation.description}
+
+                                                    </b:column>
+                                                </b:row>
+                                                <hr/>
+
+                                                <b:row style="margin-bottom: 10px;">
+                                                    <b:column medium-screen="6" >
+                                                        <label class="text-info"> #{msgs.classroom}</label>
+                                                    </b:column>
+                                                    <b:column medium-screen="6" >
+                                                        #{activityController.classRoom.classRoomName}
+
+                                                    </b:column>
+                                                </b:row>
+                                                <b:row style="margin-bottom: 10px;">
+                                                    <b:column medium-screen="6" >
+                                                        <label class="text-info"> #{msgs.startTime}</label>
+                                                    </b:column>
+                                                    <b:column medium-screen="6" >
+
+                                                        #{activityController.reservation.dateToShow}  #{activityController.reservation.timeToShow}
+
+                                                    </b:column>
+                                                </b:row>
+
+                                                <b:row style="margin-bottom: 10px;">
+                                                    <b:column medium-screen="6" >
+                                                        <label class="text-info"> #{msgs.endTime}</label>
+                                                    </b:column>
+                                                    <b:column medium-screen="6" >
+
+                                                        #{activityController.reservation.dateEndToShow}  #{activityController.reservation.timeEndToShow}
+
+                                                    </b:column>
+                                                </b:row>
+                                                <hr/>
+                                                <b:row style="margin-bottom: 10px;">
+                                                    <b:column medium-screen="6" >
+                                                        <label class="text-info"> #{msgs.courseName}</label>
+                                                    </b:column>
+                                                    <b:column medium-screen="6" rendered="#{activityController.reservation.course!=null}">
+                                                        #{activityController.reservation.course.courseName}
+                                                    </b:column>
+                                                    <b:column medium-screen="6" rendered="#{activityController.reservation.course == null}">
+                                                        <b:iconAwesome name="times"/>
+                                                    </b:column>
+                                                </b:row>
+                                                <b:row style="margin-bottom: 10px;">
+                                                    <b:column medium-screen="6" >
+                                                        <label class="text-info"> #{msgs.teacher}</label>
+                                                    </b:column>
+                                                    <b:column medium-screen="6" >
+
+                                                        #{activityController.reservation.teacher.firstName} #{activityController.reservation.teacher.surrName}
+
+                                                    </b:column>
+                                                </b:row>                                          
+
+                                                <b:row style="margin-bottom: 20px;">
+                                                    <b:column medium-screen="6" >
+                                                        <label class="text-info"> #{msgs.purpose}</label>
+                                                    </b:column>
+                                                    <b:column medium-screen="6" >
+                                                        #{activityController.reservation.purpose}
+
+                                                    </b:column>
+                                                </b:row>
+
+
+                                                <b:row>
+                                                    <b:column>                                                  
+                                                        <b:button value="#{msgs.close}" onclick="PF('eventDialog').hide();" 
+                                                                  class="btn btn-info" style="width: 100%;margin-top: 30px;" />
+                                                    </b:column>
+                                                </b:row>
+                                            </b:column>
+
+                                        </b:row>
+                                    </p:dialog>   
+                                </b:row>
+
+
+                            </b:column>
+
+                        </b:row>
+
+                    </h:form>
+                    #{activityController.setAlertType(0)}
+                    #{activityController.setMessageContent("")}
+                </b:container>
+            </ui:define>
+        </ui:composition>
+    </body>
+</html>
