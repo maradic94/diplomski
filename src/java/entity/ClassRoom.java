@@ -42,6 +42,7 @@ public class ClassRoom implements Serializable{
     @Column(nullable = false, name = "has_whiteboard")
     private boolean hasWhiteboard;
 
+    //ovo je neka izmena zbog gita
     // ako ima nastavnicki - ima projektor
     @Column(nullable = false, name = "has_main_computer")
     private boolean hasMainComputer;
